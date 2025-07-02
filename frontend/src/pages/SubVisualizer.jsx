@@ -40,7 +40,9 @@ export default function RestVisualizer() {
   return (
     <Layout>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8">Resta paso a paso en base {base}</h1>
+        <h1 className="text-4xl font-bold text-center mb-8">
+          Resta paso a paso en base <span className="text-blue-400">{base}</span>
+        </h1>
 
         {/* Formulario */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -64,7 +66,6 @@ export default function RestVisualizer() {
           <div className="bg-gray-800 p-6 rounded-xl shadow-md space-y-6">
             <div className="text-center text-lg font-semibold text-blue-300">Base: {data.base}</div>
 
-            <ArrayDisplay label="préstamo" array={data.steps.map(s => s.borrow)} highlight={currentStep} />
             <ArrayDisplay label="u" array={data.u_digits} highlight={currentStep} />
             <ArrayDisplay label="v" array={data.v_digits} highlight={currentStep} />
             <ArrayDisplay label="resultado" array={data.steps[currentStep].result} highlight={currentStep} />
@@ -72,6 +73,12 @@ export default function RestVisualizer() {
             <p className="mt-4 text-center text-yellow-400 italic text-lg">
               {data.steps[currentStep].Resumen || data.steps[currentStep].summary}
             </p>
+
+            {data.steps[currentStep].borrow !== undefined && (
+              <p className="text-center text-pink-400 text-lg">
+                Préstamo en este paso: {data.steps[currentStep].borrow}
+              </p>
+            )}
 
             <div className="flex justify-center space-x-4 mt-6">
               <button onClick={prevStep} disabled={currentStep === 0}

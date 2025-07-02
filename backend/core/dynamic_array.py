@@ -1,5 +1,3 @@
-# backend/core/dynamic_array.py
-
 class DynamicArray:
     def __init__(self, capacity=2):
         self.capacity = capacity
@@ -14,6 +12,14 @@ class DynamicArray:
             self._resize()
         self.data[self.size] = value
         self.size += 1
+
+    def pop(self):
+        if self.size == 0:
+            raise IndexError("Pop from empty DynamicArray")
+        value = self.data[self.size - 1]
+        self.data[self.size - 1] = None  # Limpieza opcional
+        self.size -= 1
+        return value
 
     def _resize(self):
         self.capacity *= 2
