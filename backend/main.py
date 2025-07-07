@@ -64,3 +64,5 @@ def multiplicacion(data: OperationRequest):
 def division(data: OperationRequest):
     result = division_digitos_base_b(data.u, data.v, data.base)
     return result
+
+
