@@ -34,29 +34,6 @@ function ArrayDisplay({ label, array, highlight }) {
 }
 
 
-// --- Componente para el búfer de cálculo (sin cambios) ---
-function CalculationBuffer({ step, base }) {
-    const { u_digit, v_digit, carry_in, product, carry_out } = step;
-
-    return (
-        <div className="bg-gray-900 p-4 rounded-lg my-4 text-center">
-            <h3 className="font-semibold text-lg text-white mb-3">Búfer de Cálculo</h3>
-            <div className="flex justify-center items-center space-x-2 font-mono text-xl">
-                <span className="text-green-400">{u_digit}</span>
-                <span className="text-gray-400">x</span>
-                <span className="text-green-400">{v_digit}</span>
-                <span className="text-gray-400">+</span>
-                <span className="text-yellow-400" title="Acarreo anterior">{carry_in}</span>
-                <span className="text-gray-400">=</span>
-                <span className="text-cyan-400 font-bold">{product}</span>
-            </div>
-            <p className="text-sm text-gray-400 mt-2">
-                (Se escribe <span className="font-bold text-white">{product % base}</span> y se lleva <span className="font-bold text-yellow-400">{carry_out}</span>)
-            </p>
-        </div>
-    );
-}
-
 // --- NUEVO: Componente para los controles de reproducción ---
 function PlaybackControls({ isPlaying, togglePlay, speed, setSpeed, isFinalStep }) {
     return (
@@ -207,9 +184,7 @@ export default function MultiplicationVisualizer() {
               <div className="flex flex-col items-center space-y-4">
                   <ArrayDisplay label="u" array={vizData.u_digits} highlight={vizData.currentPaso.j} />
                   <ArrayDisplay label="v" array={vizData.v_digits} highlight={vizData.currentPaso.i} />
-                  
-                  {vizData.currentPaso.u_digit !== undefined && <CalculationBuffer step={vizData.currentPaso} base={vizData.base} />}
-                  
+
                   <div className="w-full border-t-2 border-green-500 my-2"></div>
                   
                   <ArrayDisplay 

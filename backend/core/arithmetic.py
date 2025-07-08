@@ -1,6 +1,6 @@
 from .dynamic_array import DynamicArray
 
-def decimal_a_base_b(decimal, b):
+def decimal_a_base_B(decimal, b):
     if decimal <= 0:
         return DynamicArray(), "0", 1
     cociente = decimal
@@ -13,15 +13,15 @@ def decimal_a_base_b(decimal, b):
         cociente = cociente // b
     return digitos, b_string, len(digitos)
 
-def base_b_a_decimal(digitos, b):
+def baseB_a_decimal(digitos, b):
     decimal = 0
     for i in range(len(digitos)):
         decimal += digitos.get(i) * (b ** i)
     return decimal
 
-def suma_digitos_base_b(u, v, b):
-    u_digitos, u_string, n = decimal_a_base_b(u, b)
-    v_digitos, v_string, m = decimal_a_base_b(v, b)
+def sumaDigitosBaseB(u, v, b):
+    u_digitos, u_string, n = decimal_a_base_B(u, b)
+    v_digitos, v_string, m = decimal_a_base_B(v, b)
 
     # Pad with zeros
     if n < m:
@@ -82,7 +82,7 @@ def suma_digitos_base_b(u, v, b):
 
     # Build final string
     w_string = "".join(str(w.get(i)) for i in reversed(range(len(w))))
-    w_base10 = base_b_a_decimal(w, b)
+    w_base10 = baseB_a_decimal(w, b)
 
     return {
         "steps": steps,
@@ -97,15 +97,15 @@ def suma_digitos_base_b(u, v, b):
     }
 
 
-def resta_digitos_base_b(u, v, b):
+def restaDigitosBaseB(u, v, b):
     # Asegura que u >= v
     swapped = False
     if u < v:
         u, v = v, u
         swapped = True
 
-    u_digitos, u_string, n = decimal_a_base_b(u, b)
-    v_digitos, v_string, m = decimal_a_base_b(v, b)
+    u_digitos, u_string, n = decimal_a_base_B(u, b)
+    v_digitos, v_string, m = decimal_a_base_B(v, b)
 
     # Igualar longitud
     if n > m:
@@ -153,7 +153,7 @@ def resta_digitos_base_b(u, v, b):
     # Resultado final
     result_final = [w.get(i) for i in range(len(w))]
     w_string = "".join(str(w.get(i)) for i in reversed(range(len(w))))
-    w_base10 = base_b_a_decimal(w, b)
+    w_base10 = baseB_a_decimal(w, b)
 
     steps.append({
         "index": max_len,
@@ -181,9 +181,13 @@ def resta_digitos_base_b(u, v, b):
         "swapped": swapped
     }
 
+from core.dynamic_array import DynamicArray
+from core.arithmetic import decimal_a_base_B, baseB_a_decimal
+
 def multiplicacion_digitos_base_b(u, v, b):
-    u_digitos, u_string, n = decimal_a_base_b(u, b)
-    v_digitos, v_string, m = decimal_a_base_b(v, b)
+    # Asumo que tus funciones de conversión devuelven (array, string, longitud)
+    u_digitos, u_string, n = decimal_a_base_B(u, b)
+    v_digitos, v_string, m = decimal_a_base_B(v, b)
 
     # Crear resultado w con n + m ceros
     w = DynamicArray()
@@ -195,57 +199,68 @@ def multiplicacion_digitos_base_b(u, v, b):
     for i in range(m):  # Por cada dígito de v
         v_digit = v_digitos.get(i)
         if v_digit != 0:
-            k = 0  # Acarreo inicial
+            k_inicial_loop = 0  # Acarreo inicial para este dígito de v
             for j in range(n):  # Por cada dígito de u
                 u_digit = u_digitos.get(j)
-                prev = w.get(j + i)
-                producto = u_digit * v_digit
-                total = producto + prev + k
-                new_digit = total % b
-                k = total // b
-                w.set(j + i, new_digit)
+                
+                # Captura los valores de entrada para este paso específico
+                acarreo_de_entrada = k_inicial_loop
+                valor_previo_en_w = w.get(j + i)
 
-                # Snapshot del resultado parcial
+                # Realiza el cálculo
+                producto = u_digit * v_digit
+                total = producto + valor_previo_en_w + acarreo_de_entrada
+                nuevo_digito_en_w = total % b
+                acarreo_de_salida = total // b
+                
+                # Actualiza el resultado y el acarreo
+                w.set(j + i, nuevo_digito_en_w)
+                k_inicial_loop = acarreo_de_salida
+
+                # Guarda el snapshot del resultado
                 snapshot = [w.get(k_idx) for k_idx in range(len(w))]
 
+                # Envía un diccionario estructurado
                 steps.append({
+                    "type": "calculation",
                     "i": i,
                     "j": j,
                     "u_digit": u_digit,
                     "v_digit": v_digit,
-                    "carry_in": k,
-                    "partial": prev,
+                    "carry_in": acarreo_de_entrada,
+                    "partial": valor_previo_en_w,
                     "product": producto,
                     "sum": total,
-                    "digit_result": new_digit,
-                    "carry_out": k,
+                    "digit_result": nuevo_digito_en_w,
+                    "carry_out": acarreo_de_salida,
                     "result": snapshot.copy(),
-                    "Resumen": f"u[{j}]={u_digit} × v[{i}]={v_digit} + {prev} + acarreo = {total} → {new_digit} (Acarreo {k})"
+                    "Resumen": f"u[{j}]={u_digit} × v[{i}]={v_digit} + w[{i+j}]={valor_previo_en_w} (Valor previo w) + {acarreo_de_entrada} (acarreo) = {total}"
                 })
 
-            # Acarreo final para la columna
-            if k > 0:
-                prev = w.get(i + n)
-                w.set(i + n, k)
+            # Acarreo final para la fila actual
+            if k_inicial_loop > 0:
+                w.set(i + n, w.get(i + n) + k_inicial_loop)
                 final_snapshot = [w.get(k_idx) for k_idx in range(len(w))]
                 steps.append({
+                    "type": "final_carry",
                     "i": i,
                     "j": None,
-                    "u_digit": None,
-                    "v_digit": v_digit,
-                    "carry_in": k,
-                    "partial": prev,
-                    "product": None,
-                    "sum": None,
-                    "digit_result": None,
-                    "carry_out": k,
+                    "carry_out": k_inicial_loop,
                     "result": final_snapshot.copy(),
-                    "Resumen": f"Acarreo final para v[{i}]={v_digit}: {k}"
+                    "Resumen": f"Acarreo final para v[{i}]={v_digit}: se suma {k_inicial_loop} a la columna {i+n}"
                 })
 
-    result_digits = [w.get(i) for i in range(len(w))]
-    w_string = "".join(str(w.get(i)) for i in reversed(range(len(w))))
-    w_base10 = base_b_a_decimal(w, b)
+    # Eliminar ceros sobrantes al final del DynamicArray 'w'
+    while len(w) > 1 and w.get(len(w) - 1) == 0:
+        w.pop()
+
+    # --- CORRECCIÓN APLICADA AQUÍ ---
+    # Para la conversión a decimal, usamos el objeto 'w' que sí tiene el método .get()
+    w_base10 = baseB_a_decimal(w, b) 
+    
+    # Para el resto del JSON, podemos seguir usando una lista normal
+    result_digits = [w.get(k) for k in range(len(w))]
+    w_string = "".join(str(d) for d in reversed(result_digits))
 
     return {
         "steps": steps,
