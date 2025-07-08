@@ -176,7 +176,7 @@ def division_digitos_base_b(u_decimal, v_decimal, base):
         coc = DynamicArray2(); coc.push(0)
         res = u
         resultado["resultado"] = {
-            "cociente": [0],
+            "cociente_array": [0],
             "residuo": [res.get(i) for i in range(len(res))],
             "cociente_decimal": 0,
             "residuo_decimal": u_decimal,
@@ -260,7 +260,7 @@ def division_digitos_base_b(u_decimal, v_decimal, base):
     res_str = ''.join(str(r_final.get(i)) for i in reversed(range(len(r_final))))
 
     resultado["resultado"] = {
-        "cociente": [q.get(i) for i in range(len(q))],
+        "cociente_array": [q.get(i) for i in range(len(q))],
         "residuo": [r_final.get(i) for i in range(len(r_final))],
         "cociente_decimal": coc_decimal,
         "residuo_decimal": res_decimal,
