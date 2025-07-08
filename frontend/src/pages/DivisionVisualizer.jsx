@@ -222,7 +222,7 @@ export default function DivisionVisualizer() {
                                 {/* Sección de Resultado Final */}
                                 {currentStep === vizData.pasos.length - 1 && (
                                     <div className="mt-6 text-center bg-gray-900 p-4 rounded-lg">
-                                        <h3 className="text-xl font-bold text-green-400">🎉 ¡División Completa!</h3>
+                                        <h3 className="text-xl font-bold text-green-400">División Completa</h3>
                                         {vizData.preprocesamiento.factor_escala_d > 1 && <p className="text-sm text-gray-400 mb-3">Resultado final des-normalizado</p>}
                                         <div className="flex justify-center gap-8 items-start mt-3 font-mono">
                                             <div className="text-center">
