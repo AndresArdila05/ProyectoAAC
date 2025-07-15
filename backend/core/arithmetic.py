@@ -181,9 +181,6 @@ def restaDigitosBaseB(u, v, b):
         "swapped": swapped
     }
 
-from core.dynamic_array import DynamicArray
-from core.arithmetic import decimal_a_base_B, baseB_a_decimal
-
 def multiplicacion_digitos_base_b(u, v, b):
     # Asumo que tus funciones de conversión devuelven (array, string, longitud)
     u_digitos, u_string, n = decimal_a_base_B(u, b)

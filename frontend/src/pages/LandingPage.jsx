@@ -9,11 +9,11 @@ const LandingPage = () => {
           Visualizador de Aritmética en Base&nbsp;<span className="text-white">b</span>
         </h2>
         <p className="text-base md:text-lg text-gray-400 mt-4 px-4 md:px-0">
-          Aprende paso a paso cómo funcionan las operaciones básicas en diferentes bases numéricas.
+          Aprende paso a paso cómo funcionan las operaciones básicas en diferentes bases numéricas. Algoritmos basados en el libro de Lamanga.
         </p>
 
         <img
-          src="/src/LandingPic.jpg" // Cambia esto si tu imagen está en otro lugar
+          src="/src/assets/LandingPic.png" // Cambia esto si tu imagen está en otro lugar
           alt="Aritmética visual"
           className="mt-8 w-full max-w-3xl rounded-xl shadow-lg border border-gray-700"
         />

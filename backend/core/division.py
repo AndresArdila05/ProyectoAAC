@@ -49,7 +49,7 @@ class DynamicArray2:
         else:
             raise IndexError("Index out of bounds")
 
-    def __getitem__(self, index):
+    def __getitem__(self, index): 
         if isinstance(index, slice):
             result = DynamicArray2()
             for i in range(*index.indices(self.size)):
