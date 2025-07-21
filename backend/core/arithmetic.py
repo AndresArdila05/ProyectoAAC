@@ -182,7 +182,6 @@ def restaDigitosBaseB(u, v, b):
     }
 
 def multiplicacion_digitos_base_b(u, v, b):
-    # Asumo que tus funciones de conversión devuelven (array, string, longitud)
     u_digitos, u_string, n = decimal_a_base_B(u, b)
     v_digitos, v_string, m = decimal_a_base_B(v, b)
 
@@ -251,7 +250,6 @@ def multiplicacion_digitos_base_b(u, v, b):
     while len(w) > 1 and w.get(len(w) - 1) == 0:
         w.pop()
 
-    # --- CORRECCIÓN APLICADA AQUÍ ---
     # Para la conversión a decimal, usamos el objeto 'w' que sí tiene el método .get()
     w_base10 = baseB_a_decimal(w, b) 
     
