@@ -19,3 +19,5 @@ y
 ./run_frontend.bat
 ```
 en dos terminales separadas.
+
+gdelgadol lindo
